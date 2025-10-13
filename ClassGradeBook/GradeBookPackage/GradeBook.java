@@ -23,6 +23,17 @@ public class GradeBook {
         return true;
     }
 
+    public Double gpa(Session session){
+        Double result = 0.0;
+        Integer count = 0;
+        for(Session.Subject subject: session.subjects){
+            result += subject.exam;
+            count++;
+        }
+        result/=count;
+        return result;
+    }
+
     public ArrayList<Integer> getExcellentSessionNumbers() {
         ArrayList<Integer> excellentSessions = new ArrayList<>();
         for (Integer i = 0; i < sessions.size(); i++) {
@@ -51,11 +62,12 @@ public class GradeBook {
                     
                     for (Integer sessionIndex : excellentSessionNumbers) {
                         Session session = gbBook.sessions.get(sessionIndex - 1);
-                        writer.write(String.format("Сессия %d:\n", sessionIndex));
+                        writer.write(String.format("\nСессия %d:\n", sessionIndex));
                         
                         for (Session.Subject subj : session.subjects) {
-                            writer.write(String.format("  %s: %d\n", subj.subject, subj.exam));
+                            writer.write(String.format("%s: %d\n", subj.subject, subj.exam));
                         }
+                        writer.write(String.format("GPA: %s\n", gpa(session)));
                     }
                     writer.write("\n\n");
                 }
